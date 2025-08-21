@@ -1,12 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CalculatorAPI.Controllers;
+namespace CalculatorApi.Controllers;
 
-public class CalculatorController : Controller
+[ApiController]
+[Route("api/[controller]")]
+public class CalculatorController : ControllerBase
 {
-    // GET
-    public IActionResult Index()
+    [HttpGet("sum")]
+    public IActionResult Sum([FromQuery] double a, [FromQuery] double b)
+        => Ok(new { result = a + b });
+
+    [HttpGet("subtract")]
+    public IActionResult Subtract([FromQuery] double a, [FromQuery] double b)
+        => Ok(new { result = a - b });
+
+    [HttpGet("multiply")]
+    public IActionResult Multiply([FromQuery] double a, [FromQuery] double b)
+        => Ok(new { result = a * b });
+
+    [HttpGet("divide")]
+    public IActionResult Divide([FromQuery] double a, [FromQuery] double b)
     {
-        return View();
+        if (b == 0) return BadRequest(new { error = "Division by zero is not allowed." });
+        return Ok(new { result = a / b });
     }
 }
